@@ -1,0 +1,6 @@
+export enum MovementType {
+    RECEIPT = "RECEIPT",
+    SHIPMENT = "SHIPMENT",
+    WRITE_OFF = "WRITE_OFF",
+    INTERNAL_TRANSFER = "INTERNAL_TRANSFER",
+}
