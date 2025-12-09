@@ -3,8 +3,8 @@ export type SKU = string;
 export type UnitOfMeasure = string;
 export type Capacity = number;
 export type SectionId = string;
-export type ReceiptId = string;
-export type ShipmentId = string;
+export type ReceiptId = number;
+export type ShipmentId = number;
 export class MovementId {
     constructor(private readonly value: string) {
         if (!value) {
