@@ -1,8 +1,8 @@
-import { ProductId } from "../valueobject/ProductId";
+import { ProductCode } from "../valueobject/ProductCode";
 import { LowStockAlertEvent } from "../event/LowStockAlertEvent";
 
 export interface InventoryService {
-    getCurrentStock(productId: ProductId): number;
+    getCurrentStock(productId: ProductCode): number;
     checkStockLevels(): LowStockAlertEvent[];
 }
 

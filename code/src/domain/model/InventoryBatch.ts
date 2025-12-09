@@ -1,10 +1,10 @@
 import { BatchId } from "../valueobject/BatchId";
-import { ProductId } from "../valueobject/ProductId";
+import { ProductCode } from "../valueobject/ProductCode";
 
 export class InventoryBatch {
     constructor(
         private readonly id: BatchId,
-        private readonly productId: ProductId,
+        private readonly productId: ProductCode,
         private quantity: number,
         private readonly receivedAt: Date,
         private readonly expiresAt: Date,
@@ -19,7 +19,7 @@ export class InventoryBatch {
         return this.id;
     }
 
-    getProductId(): ProductId {
+    getProductCode(): ProductCode {
         return this.productId;
     }
 

@@ -1,8 +1,8 @@
-import { ProductId } from "../valueobject/ProductId";
+import { ProductCode } from "../valueobject/ProductCode";
 
 export class LowStockAlertEvent {
     constructor(
-        public readonly productId: ProductId,
+        public readonly productId: ProductCode,
         public readonly currentStock: number,
         public readonly minLevel: number
     ) {}

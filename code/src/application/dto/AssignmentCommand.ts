@@ -1,10 +1,10 @@
-import { ProductId } from "@/domain/valueobject/ProductId";
+import { ProductCode } from "@/domain/valueobject/ProductCode";
 import { ProductDimensions } from "@/domain/valueobject/ProductDimensions";
 import { ValidationResult } from "@/shared";
 
 export class AssignmentCommand {
     constructor(
-        public readonly productId: ProductId,
+        public readonly productId: ProductCode,
         public readonly dimensions: ProductDimensions,
         public readonly quantity: number
     ) {}

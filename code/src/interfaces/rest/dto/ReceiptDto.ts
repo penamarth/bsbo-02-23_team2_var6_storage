@@ -1,6 +1,6 @@
 import { ReceiptCommand } from "@/application/dto/ReceiptCommand";
 import { ReceiptItem } from "@/application/dto/ReceiptItem";
-import { ProductId } from "@/domain/valueobject/ProductId";
+import { ProductCode } from "@/domain/valueobject/ProductCode";
 
 export class ReceiptDto {
     constructor(
@@ -10,6 +10,8 @@ export class ReceiptDto {
             quantity: number;
             batchNumber: string;
             expiryDate: string;
+            supplier: string;
+            receivedAt: string;
         }>
     ) {}
 
@@ -17,10 +19,12 @@ export class ReceiptDto {
         return new ReceiptCommand(
             this.supplier,
             this.items.map(item => new ReceiptItem(
-                new ProductId(item.productId),
+                new ProductCode(item.productId),
                 item.quantity,
                 item.batchNumber,
-                new Date(item.expiryDate)
+                new Date(item.expiryDate),
+                item.supplier,
+                new Date(item.receivedAt)
             ))
         );
     }

@@ -1,5 +1,5 @@
-import { ProductId } from "../valueobject/ProductId";
-import { LocationId } from "../valueobject/LocationId";
+import { ProductCode } from "../valueobject/ProductCode";
+import { LocationCoordinates } from "../valueobject/LocationCoordinates";
 import { MovementId, DateRange, MovementType } from "@/shared";
 import type { MovementRepository } from "../repository/MovementRepository";
 import { MovementRecordedEvent } from "../event/MovementRecordedEvent";
@@ -11,14 +11,14 @@ export class MovementService {
         private readonly eventPublisher: EventPublisher
     ) {}
 
-    recordReceiptMovement(productId: ProductId, quantity: number, locationId: LocationId): MovementId {
+    recordReceiptMovement(productId: ProductCode, quantity: number, coordinates: LocationCoordinates): MovementId {
         const movementId = new MovementId(`receipt-${Date.now()}`);
         const movement = {
             id: movementId,
             type: MovementType.RECEIPT,
             productId,
             quantity,
-            locationId,
+            coordinates,
             timestamp: new Date()
         };
         this.movementRepository.record(movement);
@@ -29,14 +29,14 @@ export class MovementService {
         return movementId;
     }
 
-    recordShipmentMovement(productId: ProductId, quantity: number, locationId: LocationId): MovementId {
+    recordShipmentMovement(productId: ProductCode, quantity: number, coordinates: LocationCoordinates): MovementId {
         const movementId = new MovementId(`shipment-${Date.now()}`);
         const movement = {
             id: movementId,
             type: MovementType.SHIPMENT,
             productId,
             quantity,
-            locationId,
+            coordinates,
             timestamp: new Date()
         };
         this.movementRepository.record(movement);
@@ -47,14 +47,14 @@ export class MovementService {
         return movementId;
     }
 
-    recordWriteOffMovement(productId: ProductId, quantity: number, locationId: LocationId): MovementId {
+    recordWriteOffMovement(productId: ProductCode, quantity: number, coordinates: LocationCoordinates): MovementId {
         const movementId = new MovementId(`writeoff-${Date.now()}`);
         const movement = {
             id: movementId,
             type: MovementType.WRITE_OFF,
             productId,
             quantity,
-            locationId,
+            coordinates,
             timestamp: new Date()
         };
         this.movementRepository.record(movement);
@@ -65,11 +65,11 @@ export class MovementService {
         return movementId;
     }
 
-    getMovementHistory(productId: ProductId, period: DateRange): MovementRecordedEvent[] {
+    getMovementHistory(productId: ProductCode, period: DateRange): MovementRecordedEvent[] {
         return this.movementRepository.getHistory(productId, period);
     }
 
-    validateMovement(productId: ProductId, quantity: number, locationId: LocationId, type: MovementType): boolean {
+    validateMovement(productId: ProductCode, quantity: number, coordinates: LocationCoordinates, type: MovementType): boolean {
         if (quantity <= 0) {
             return false;
         }

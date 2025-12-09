@@ -1,4 +1,4 @@
-export * from "./ProductId";
+export * from "./ProductCode";
 export * from "./BatchId";
 export * from "./LocationId";
 export * from "./WriteOffId";

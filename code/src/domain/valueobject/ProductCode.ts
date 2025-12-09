@@ -1,7 +1,7 @@
-export class ProductId {
+export class ProductCode {
     constructor(private readonly value: string) {
         if (!value) {
-            throw new Error("ProductId cannot be empty");
+            throw new Error("ProductCode cannot be empty");
         }
     }
 
@@ -9,7 +9,7 @@ export class ProductId {
         return this.value;
     }
 
-    equals(other: ProductId): boolean {
+    equals(other: ProductCode): boolean {
         return this.value === other.value;
     }
 
@@ -17,3 +17,4 @@ export class ProductId {
         return this.value;
     }
 }
+

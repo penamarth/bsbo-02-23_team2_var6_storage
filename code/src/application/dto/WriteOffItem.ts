@@ -1,9 +1,9 @@
-import { ProductId } from "@/domain/valueobject/ProductId";
+import { ProductCode } from "@/domain/valueobject/ProductCode";
 import { BatchId } from "@/domain/valueobject/BatchId";
 
 export class WriteOffItem {
     constructor(
-        public readonly productId: ProductId,
+        public readonly productId: ProductCode,
         public readonly batchId: BatchId,
         public readonly quantity: number,
         public readonly reason: string

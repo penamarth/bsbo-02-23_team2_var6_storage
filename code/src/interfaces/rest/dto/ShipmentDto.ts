@@ -1,6 +1,6 @@
 import { ShipmentCommand } from "@/application/dto/ShipmentCommand";
 import { ShipmentItem } from "@/application/dto/ShipmentItem";
-import { ProductId } from "@/domain/valueobject/ProductId";
+import { ProductCode } from "@/domain/valueobject/ProductCode";
 import { BatchId } from "@/domain/valueobject/BatchId";
 
 export class ShipmentDto {
@@ -17,7 +17,7 @@ export class ShipmentDto {
         return new ShipmentCommand(
             this.customer,
             this.items.map(item => new ShipmentItem(
-                new ProductId(item.productId),
+                new ProductCode(item.productId),
                 new BatchId(item.batchId),
                 item.quantity
             ))

@@ -5,7 +5,7 @@ import type { ShipmentRepository } from "@/domain/repository/ShipmentRepository"
 import type { InventoryService } from "@/domain/service/InventoryService";
 import { MovementService } from "@/domain/service/MovementService";
 import { Shipment } from "@/domain/model/Shipment";
-import { LocationId } from "@/domain/valueobject/LocationId";
+import { LocationCoordinates } from "@/domain/valueobject/LocationCoordinates";
 
 export class RegisterGoodsShipmentUseCase {
     constructor(
@@ -34,13 +34,13 @@ export class RegisterGoodsShipmentUseCase {
 
             // Record movements
             for (const item of command.items) {
-                // LocationId would need to be determined from batch location
+                // Coordinates would need to be determined from batch location
                 // For now, using a placeholder
-                const locationId = new LocationId("default-location");
+                const coordinates = new LocationCoordinates("A", "R1", "S1", 1);
                 this.movementService.recordShipmentMovement(
                     item.productId,
                     item.quantity,
-                    locationId
+                    coordinates
                 );
             }
 

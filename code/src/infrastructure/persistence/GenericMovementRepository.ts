@@ -1,5 +1,5 @@
 import type { MovementRepository, StockMovement } from "@/domain/repository/MovementRepository";
-import { ProductId } from "@/domain/valueobject/ProductId";
+import { ProductCode } from "@/domain/valueobject/ProductCode";
 import { DateRange } from "@/shared";
 import { MovementRecordedEvent } from "@/domain/event/MovementRecordedEvent";
 
@@ -10,7 +10,7 @@ export class GenericMovementRepository implements MovementRepository {
         this.movements.push(movement);
     }
 
-    getHistory(productId: ProductId, period: DateRange): MovementRecordedEvent[] {
+    getHistory(productId: ProductCode, period: DateRange): MovementRecordedEvent[] {
         return this.movements
             .filter(m => 
                 m.productId.equals(productId) &&

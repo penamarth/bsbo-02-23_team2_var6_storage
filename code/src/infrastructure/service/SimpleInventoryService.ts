@@ -1,15 +1,15 @@
 import type { InventoryService } from "@/domain/service/InventoryService";
-import { ProductId } from "@/domain/valueobject/ProductId";
+import { ProductCode } from "@/domain/valueobject/ProductCode";
 import { LowStockAlertEvent } from "@/domain/event/LowStockAlertEvent";
 
 export class SimpleInventoryService implements InventoryService {
     private stock: Map<string, number> = new Map();
 
-    getCurrentStock(productId: ProductId): number {
+    getCurrentStock(productId: ProductCode): number {
         return this.stock.get(productId.getValue()) || 0;
     }
 
-    setStock(productId: ProductId, quantity: number): void {
+    setStock(productId: ProductCode, quantity: number): void {
         this.stock.set(productId.getValue(), quantity);
     }
 

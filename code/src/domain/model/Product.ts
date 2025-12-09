@@ -1,11 +1,11 @@
-import { ProductId } from "../valueobject/ProductId";
+import { ProductCode } from "../valueobject/ProductCode";
 import { ProductDimensions } from "../valueobject/ProductDimensions";
 import { StockThresholds } from "../valueobject/StockThresholds";
 import type { SKU, UnitOfMeasure } from "@/shared";
 
 export class Product {
     constructor(
-        private readonly id: ProductId,
+        private readonly id: ProductCode,
         private readonly sku: SKU,
         private readonly name: string,
         private readonly category: string,
@@ -14,7 +14,7 @@ export class Product {
         private readonly stockLevels: StockThresholds
     ) {}
 
-    getId(): ProductId {
+    getId(): ProductCode {
         return this.id;
     }
 

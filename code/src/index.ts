@@ -28,7 +28,7 @@ import { ShipmentItem } from "@/application/dto/ShipmentItem";
 import { WriteOffCommand } from "@/application/dto/WriteOffCommand";
 import { WriteOffItem } from "@/application/dto/WriteOffItem";
 import { AssignmentCommand } from "@/application/dto/AssignmentCommand";
-import { ProductId } from "@/domain/valueobject/ProductId";
+import { ProductCode } from "@/domain/valueobject/ProductCode";
 import { BatchId } from "@/domain/valueobject/BatchId";
 import { Product } from "@/domain/model/Product";
 import { ProductDimensions } from "@/domain/valueobject/ProductDimensions";
@@ -103,7 +103,9 @@ function main(): void {
     console.log("1. Создание тестовых данных...");
 
     // Create a sample product
-    const productId = new ProductId(generateId());
+    console.log("   Используется: generateId()");
+    const productId = new ProductCode(generateId());
+    console.log("   Используется: new Product()");
     const product = new Product(
         productId,
         "SKU-001",
@@ -113,94 +115,132 @@ function main(): void {
         new ProductDimensions(1.5, 500), // weight (kg), volume (cm³)
         new StockThresholds(10, 100) // min, max
     );
+    console.log("   Используется: productRepository.save()");
     productRepository.save(product);
+    console.log("   Используется: inventoryService.setStock()");
     inventoryService.setStock(productId, 50);
+    console.log("   Используется: product.getName(), productId.getValue()");
     console.log(
         `   Создан продукт: ${product.getName()} (ID: ${productId.getValue()})`
     );
 
     // Create a sample storage location
+    console.log("   Используется: generateId()");
     const locationId = new LocationId(generateId());
+    console.log("   Используется: new StorageLocation()");
     const location = new StorageLocation(
         locationId,
         new LocationCoordinates("A", "R1", "S1", 1), // zone, rack, shelf, level
         1000, // capacity
         0 // occupied
     );
+    console.log("   Используется: locationRepository.save()");
     locationRepository.save(location);
+    console.log("   Используется: locationId.getValue()");
     console.log(`   Создана локация: ${locationId.getValue()}\n`);
 
     // Test receipt
     console.log("2. Тестирование регистрации поступления товаров:");
+    console.log("   Используется: new ReceiptCommand(), new ReceiptItem()");
     const receiptCommand = new ReceiptCommand("Supplier ABC", [
-        new ReceiptItem(productId, 10, "BATCH-001", new Date("2025-12-31")),
+        new ReceiptItem(
+            productId,
+            10,
+            "BATCH-001",
+            new Date("2025-12-31"),
+            "Supplier ABC",
+            new Date()
+        ),
     ]);
+    console.log("   Используется: facade.receiveGoods()");
     const receiptResult = facade.receiveGoods(receiptCommand);
+    console.log("   Используется: receiptResult.isSuccess()");
     if (receiptResult.isSuccess()) {
+        console.log("   Используется: receiptResult.getValue()");
         console.log(
-            `   ✓ Поступление зарегистрировано: ID ${receiptResult.getValue()}\n`
+            `    Поступление зарегистрировано: ID ${receiptResult.getValue()}\n`
         );
     } else {
-        console.log(`   ✗ Ошибка: ${receiptResult.getError().message}\n`);
+        console.log("   Используется: receiptResult.getError()");
+        console.log(`    Ошибка: ${receiptResult.getError().message}\n`);
     }
 
     // Test shipment
     console.log("3. Тестирование регистрации отгрузки товаров:");
+    console.log("   Используется: new BatchId()");
     const batchId = new BatchId("BATCH-001");
+    console.log("   Используется: new ShipmentCommand(), new ShipmentItem()");
     const shipmentCommand = new ShipmentCommand("Customer XYZ", [
         new ShipmentItem(productId, batchId, 5),
     ]);
+    console.log("   Используется: facade.shipGoods()");
     const shipmentResult = facade.shipGoods(shipmentCommand);
+    console.log("   Используется: shipmentResult.isSuccess()");
     if (shipmentResult.isSuccess()) {
+        console.log("   Используется: shipmentResult.getValue()");
         console.log(
-            `   ✓ Отгрузка зарегистрирована: ID ${shipmentResult.getValue()}\n`
+            `    Отгрузка зарегистрирована: ID ${shipmentResult.getValue()}\n`
         );
     } else {
-        console.log(`   ✗ Ошибка: ${shipmentResult.getError().message}\n`);
+        console.log("   Используется: shipmentResult.getError()");
+        console.log(`    Ошибка: ${shipmentResult.getError().message}\n`);
     }
 
     // Test write-off
     console.log("4. Тестирование регистрации списания товаров:");
+    console.log("   Используется: new WriteOffCommand(), new WriteOffItem()");
     const writeOffCommand = new WriteOffCommand(
         "Повреждение при транспортировке",
         "Иванов И.И.",
         [new WriteOffItem(productId, batchId, 2, "Товар поврежден")]
     );
+    console.log("   Используется: facade.writeOffGoods()");
     const writeOffResult = facade.writeOffGoods(writeOffCommand);
+    console.log("   Используется: writeOffResult.isSuccess()");
     if (writeOffResult.isSuccess()) {
+        console.log("   Используется: writeOffResult.getValue().getValue()");
         console.log(
-            `   ✓ Списание зарегистрировано: ID ${writeOffResult
+            `    Списание зарегистрировано: ID ${writeOffResult
                 .getValue()
                 .getValue()}\n`
         );
     } else {
-        console.log(`   ✗ Ошибка: ${writeOffResult.getError().message}\n`);
+        console.log("   Используется: writeOffResult.getError()");
+        console.log(`    Ошибка: ${writeOffResult.getError().message}\n`);
     }
 
     // Test location assignment
     console.log("5. Тестирование назначения места хранения:");
+    console.log(
+        "   Используется: new AssignmentCommand(), new ProductDimensions()"
+    );
     const assignmentCommand = new AssignmentCommand(
         productId,
         new ProductDimensions(1.5, 500),
         20
     );
+    console.log("   Используется: facade.assignLocation()");
     const assignmentResult = facade.assignLocation(assignmentCommand);
+    console.log("   Используется: assignmentResult.isSuccess()");
     if (assignmentResult.isSuccess()) {
+        console.log("   Используется: assignmentResult.getValue()");
+        const coordinates = assignmentResult.getValue();
         console.log(
-            `   ✓ Место хранения назначено: ${assignmentResult
-                .getValue()
-                .getValue()}\n`
+            `    Место хранения назначено: ${coordinates.zone}-${coordinates.rack}-${coordinates.shelf}-${coordinates.level}\n`
         );
     } else {
-        console.log(`   ✗ Ошибка: ${assignmentResult.getError().message}\n`);
+        console.log("   Используется: assignmentResult.getError()");
+        console.log(`    Ошибка: ${assignmentResult.getError().message}\n`);
     }
 
     // Test stock report
     console.log("6. Получение отчета по складу:");
+    console.log("   Используется: facade.getStockReport()");
     const stockReport = facade.getStockReport({
         warehouseId: "WAREHOUSE-001",
         date: new Date(),
     } as any);
+    console.log("   Используется: stockReport.length");
     console.log(`   Отчет содержит ${stockReport.length} позиций\n`);
 
     console.log("=== Демонстрация завершена ===");

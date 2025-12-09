@@ -2,7 +2,7 @@ import { WriteOffId } from "../valueobject/WriteOffId";
 import { WriteOffStatus, MovementId, MovementType } from "@/shared";
 import { WriteOffLineItem } from "./WriteOffLineItem";
 import { MovementRecordedEvent } from "../event/MovementRecordedEvent";
-import { ProductId } from "../valueobject/ProductId";
+import { ProductCode } from "../valueobject/ProductCode";
 
 export class WriteOffDocument {
     private items: WriteOffLineItem[] = [];
@@ -17,6 +17,10 @@ export class WriteOffDocument {
 
     getId(): WriteOffId {
         return this.id;
+    }
+
+    getCode(): string {
+        return this.id.toString();
     }
 
     getDate(): Date {
@@ -55,11 +59,10 @@ export class WriteOffDocument {
 
     getMovementEvents(): MovementRecordedEvent[] {
         return this.items.map((item, index) => {
-            const batch = item.getBatch();
             return new MovementRecordedEvent(
                 new MovementId(`movement-${this.id.getValue()}-${index}`),
                 MovementType.WRITE_OFF,
-                batch.getProductId(),
+                item.getProductId(),
                 item.getQuantity(),
                 new Date()
             );

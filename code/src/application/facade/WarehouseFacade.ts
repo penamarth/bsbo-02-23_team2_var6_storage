@@ -11,7 +11,7 @@ import { StockReportItem } from "../dto/StockReportItem";
 import type { ReceiptId, ShipmentId } from "@/shared";
 import { Result } from "@/shared";
 import { WriteOffId } from "@/domain/valueobject/WriteOffId";
-import { LocationId } from "@/domain/valueobject/LocationId";
+import { LocationCoordinates } from "@/domain/valueobject/LocationCoordinates";
 
 export class WarehouseFacade {
     constructor(
@@ -33,7 +33,7 @@ export class WarehouseFacade {
         return this.writeOffUseCase.execute(command);
     }
 
-    assignLocation(command: AssignmentCommand): Result<LocationId> {
+    assignLocation(command: AssignmentCommand): Result<LocationCoordinates> {
         return this.assignmentUseCase.assignLocation(command);
     }
 

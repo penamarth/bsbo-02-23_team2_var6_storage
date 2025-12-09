@@ -6,10 +6,8 @@ import type { InventoryService } from "@/domain/service/InventoryService";
 import { MovementService } from "@/domain/service/MovementService";
 import { WriteOffDocument } from "@/domain/model/WriteOffDocument";
 import { WriteOffLineItem } from "@/domain/model/WriteOffLineItem";
-import { InventoryBatch } from "@/domain/model/InventoryBatch";
-import { BatchId } from "@/domain/valueobject/BatchId";
-import { ProductId } from "@/domain/valueobject/ProductId";
-import { LocationId } from "@/domain/valueobject/LocationId";
+import { ProductCode } from "@/domain/valueobject/ProductCode";
+import { LocationCoordinates } from "@/domain/valueobject/LocationCoordinates";
 
 export class RegisterWriteOffUseCase {
     constructor(
@@ -43,18 +41,13 @@ export class RegisterWriteOffUseCase {
             );
 
             // Create line items from command items
-            // Note: In real implementation, we would need to fetch InventoryBatch from repository
             for (const item of command.items) {
-                // This is a simplified version - in real implementation, fetch batch from repository
-                const batch = new InventoryBatch(
-                    item.batchId,
+                const lineItem = new WriteOffLineItem(
                     item.productId,
                     item.quantity,
-                    new Date(),
-                    new Date(),
-                    "unknown"
+                    item.batchId.getValue(),
+                    item.reason
                 );
-                const lineItem = new WriteOffLineItem(batch, item.quantity, item.reason);
                 writeOff.addItem(lineItem);
             }
 
@@ -63,12 +56,12 @@ export class RegisterWriteOffUseCase {
 
             // Record movements
             for (const item of command.items) {
-                // LocationId would need to be determined from batch location
-                const locationId = new LocationId("default-location");
+                // Coordinates would need to be determined from batch location
+                const coordinates = new LocationCoordinates("A", "R1", "S1", 1);
                 this.movementService.recordWriteOffMovement(
                     item.productId,
                     item.quantity,
-                    locationId
+                    coordinates
                 );
             }
 

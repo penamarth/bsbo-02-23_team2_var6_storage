@@ -38,7 +38,7 @@ export class RegisterGoodsReceiptUseCase {
                 
                 // Find optimal location for each item
                 const dimensions = product.getDimensions();
-                const locationId = this.locationService.executeStrategy(
+                const coordinates = this.locationService.executeStrategy(
                     dimensions,
                     item.quantity
                 );
@@ -47,7 +47,7 @@ export class RegisterGoodsReceiptUseCase {
                 this.movementService.recordReceiptMovement(
                     item.productId,
                     item.quantity,
-                    locationId
+                    coordinates
                 );
             }
 

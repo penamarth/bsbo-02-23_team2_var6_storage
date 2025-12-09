@@ -1,6 +1,6 @@
 import { WriteOffCommand } from "@/application/dto/WriteOffCommand";
 import { WriteOffItem } from "@/application/dto/WriteOffItem";
-import { ProductId } from "@/domain/valueobject/ProductId";
+import { ProductCode } from "@/domain/valueobject/ProductCode";
 import { BatchId } from "@/domain/valueobject/BatchId";
 
 export class WriteOffDto {
@@ -20,7 +20,7 @@ export class WriteOffDto {
             this.reason,
             this.responsiblePerson,
             this.items.map(item => new WriteOffItem(
-                new ProductId(item.productId),
+                new ProductCode(item.productId),
                 new BatchId(item.batchId),
                 item.quantity,
                 item.reason

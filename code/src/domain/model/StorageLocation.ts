@@ -1,13 +1,11 @@
 import { LocationId } from "../valueobject/LocationId";
 import { LocationCoordinates } from "../valueobject/LocationCoordinates";
 import { ProductDimensions } from "../valueobject/ProductDimensions";
-import { BatchId } from "../valueobject/BatchId";
-import { InventoryBatch } from "./InventoryBatch";
 import type { Capacity } from "@/shared";
 
 export class StorageLocation {
     private subLocations: StorageLocation[] = [];
-    private batches: BatchId[] = [];
+    private batches: string[] = [];
 
     constructor(
         private readonly id: LocationId,
@@ -36,7 +34,7 @@ export class StorageLocation {
         return this.occupied;
     }
 
-    getBatches(): readonly BatchId[] {
+    getBatches(): readonly string[] {
         return this.batches;
     }
 
@@ -49,17 +47,11 @@ export class StorageLocation {
         return this.getFreeSpace() >= requiredVolume;
     }
 
-    assignBatch(batch: InventoryBatch): void {
-        const batchId = batch.getId();
-        if (this.batches.some(b => b.equals(batchId))) {
+    assignBatch(batchNumber: string): void {
+        if (this.batches.includes(batchNumber)) {
             throw new Error("Batch already assigned to this location");
         }
-        this.batches.push(batchId);
-        const requiredSpace = batch.getQuantity() * 1; // Assuming 1 unit per quantity
-        if (this.occupied + requiredSpace > this.capacity) {
-            throw new Error("Not enough space for batch");
-        }
-        this.occupied += requiredSpace;
+        this.batches.push(batchNumber);
     }
 
     releaseSpace(volume: number): void {

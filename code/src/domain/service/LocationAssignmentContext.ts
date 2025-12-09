@@ -1,5 +1,5 @@
 import type { LocationAssignmentService } from "./LocationAssignmentService";
-import { LocationId } from "../valueobject/LocationId";
+import { LocationCoordinates } from "../valueobject/LocationCoordinates";
 import { ProductDimensions } from "../valueobject/ProductDimensions";
 
 export class LocationAssignmentContext {
@@ -13,7 +13,7 @@ export class LocationAssignmentContext {
         this.strategy = strategy;
     }
 
-    executeStrategy(dimensions: ProductDimensions, quantity: number): LocationId {
+    executeStrategy(dimensions: ProductDimensions, quantity: number): LocationCoordinates {
         return this.strategy.findOptimalLocation(dimensions, quantity);
     }
 }

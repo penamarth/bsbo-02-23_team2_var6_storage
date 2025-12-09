@@ -1,12 +1,12 @@
 import type { LocationAssignmentService } from "./LocationAssignmentService";
-import { LocationId } from "../valueobject/LocationId";
+import { LocationCoordinates } from "../valueobject/LocationCoordinates";
 import { ProductDimensions } from "../valueobject/ProductDimensions";
 import type { LocationRepository } from "../repository/LocationRepository";
 
 export class NearestLocationAssignmentStrategy implements LocationAssignmentService {
     constructor(private readonly locationRepository: LocationRepository) {}
 
-    findOptimalLocation(dimensions: ProductDimensions, quantity: number): LocationId {
+    findOptimalLocation(dimensions: ProductDimensions, quantity: number): LocationCoordinates {
         const availableLocations = this.locationRepository.findAvailableLocations(dimensions, quantity);
         if (availableLocations.length === 0) {
             throw new Error("No available locations found");
@@ -17,7 +17,7 @@ export class NearestLocationAssignmentStrategy implements LocationAssignmentServ
         if (!firstLocation) {
             throw new Error("No available locations found");
         }
-        return firstLocation.getId();
+        return firstLocation.getCoordinates();
     }
 }
 
